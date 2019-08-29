@@ -1,0 +1,68 @@
+/**
+ * Portfolios plugin for Craft CMS
+ *
+ * Portfolios CSS
+ *
+ * @author    Niklas Sonnenschein
+ * @copyright Copyright (c) 2019 Niklas Sonnenschein
+ * @link      https://niklassonnenschein.de
+ * @package   Portfolios
+ * @since     1.0.0
+ */
+
+.portfolios-explorer {
+  position: relative;
+  height: 100%;
+
+  .body {
+    position: relative;
+    height: 100%;
+
+    .explorer-content {
+      height: calc(100% + 48px);
+    }
+  }
+
+  .main {
+    margin: -24px;
+    padding: 24px;
+    height: calc(100% - 48px);
+    overflow: auto;
+    position: relative;
+  }
+
+  .sidebar {
+    position: absolute;
+    top: 0;
+    height: 100%;
+  }
+
+  .element {
+    &.large {
+      width: 200px;
+      padding-top: 205px;
+    }
+
+    .elementthumb {
+      width: 200px !important;
+      height: 200px !important;
+    }
+
+    .title {
+      font-weight: bold;
+      margin-bottom: 5px;
+      color: rgba(0, 0, 0, 0.5);
+    }
+
+    .detail {
+      opacity: 0.75;
+      display: block;
+    }
+  }
+}
+
+.projectselectormodal {
+  .explorer-container {
+    height: calc(100% - 60px);
+  }
+}

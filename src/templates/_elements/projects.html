@@ -1,0 +1,25 @@
+{% if projects %}
+
+  <ul class="projectsview">
+  
+    {% for project in projects %}
+      <li class="project">
+        <div class="element large hasthumb" title="{{ project.title }}" data-url="{{ project.url }}">
+          <div class="elementthumb">
+            <img src="{{ project.img }}" alt="">
+          </div>
+          <div class="label">
+            <span class="title">{{ project.title }}</span>
+            <span class="detail">{{ project.period }} {{ project.year }}</span>
+            <span class="detail">{{ project.semester }}. Semester</span>
+            <span class="detail">{{ project.course }}</span>
+          </div>
+        </div>
+      </li>
+    {% endfor %}
+
+  </ul>
+
+{% else %}
+  <p class="no-projects light">Keine Projekte</p>
+{% endif %}

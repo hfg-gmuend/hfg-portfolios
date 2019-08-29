@@ -1,0 +1,87 @@
+{# @var craft \craft\web\twig\variables\CraftVariable #}
+{#
+/**
+ * Portfolios plugin for Craft CMS 3.x
+ *
+ * Projects Field Input
+ *
+ * @author    Niklas Sonnenschein
+ * @copyright Copyright (c) 2019 Niklas Sonnenschein
+ * @link      https://niklassonnenschein.de
+ * @package   Portfolios
+ * @since     1.0.0
+ */
+#}
+
+{% import "_includes/forms" as forms %}
+
+<div class="portfolios">
+
+  <div class="add-project btn add icon">Projekt auswählen</div>
+
+  {{ forms.editableTableField({
+    id: id ~ 'projects',
+    name: name ~ '[projects]',
+    required: false,
+    static: false,
+    cols: {
+        title: {
+            heading: "Titel",
+            type: "text",
+            width: "30%",
+        },
+        study: {
+            heading: "Studiengang",
+            type: "select",
+            width: "10%",
+            options: {
+              "": "",
+              "Interaktionsgestaltung": "Interaktionsgestaltung" |t,
+              "Internet der Dinge": "Internet der Dinge" |t,
+              "Kommunikationsgestaltung": "Kommunikationsgestaltung" |t,
+              "Produktgestaltung": "Produktgestaltung" |t,
+              "Strategische Gestaltung": "Strategische Gestaltung" |t
+            }
+        },
+        semester: {
+            heading: "Fachsemester",
+            type: "number",
+            width: "10%"
+        },
+        period: {
+            heading: "Semester",
+            type: "select",
+            width: "10%",
+            options: {
+              "": "",
+              "Sommersemester": "Sommersemester",
+              "Wintersemester": "Wintersemester"
+            }
+        },
+        year: {
+          heading: "Jahr",
+          type: "text",
+          width: "5%"
+        },
+        course: {
+          heading: "Kurs",
+          type: "text",
+          width: "15%"
+        },
+        img: {
+            heading: "Bild",
+            type: "url",
+            width: "10%"
+        },
+        vimeo: {
+          heading: "Video",
+          type: "text",
+          width: "10%"
+        }
+    },
+    rows: value,
+    addRowLabel: "Manuell hinzufügen" |t,
+    })
+  }}
+
+</div>

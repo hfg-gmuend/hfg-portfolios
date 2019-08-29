@@ -1,0 +1,44 @@
+{% import '_includes/forms' as forms %}
+
+<div class="portfolios-explorer elementselectormodal">
+  <div class="body has-sidebar">
+    <div id="content" class="content has-sidebar">
+      <div id="sidebar" class="sidebar">
+        <nav>
+          <ul>
+            <li class="heading">
+              <span>Portfolios</span>
+            </li>
+            {% for gateway in gateways %}
+            <li>
+              <a href="#" data-gateway="{{ gateway.handle }}">{{ gateway.name }}</a>
+            </li>
+            {% endfor %}
+          </ul>
+        </nav>
+      </div>
+
+      <div class="main">
+        <div class="toolbar">
+          <div class="flex">
+            <div class="flex-grow texticon search icon clearable">
+              {{ forms.text({
+                    class: 'search',
+                    name: 'search',
+                    placeholder: 'Projekte suchen'
+                 })
+              }}
+            </div>
+
+            <div class="spinner right invisible"></div>
+          </div>
+        </div>
+
+        <div class="explorer-content">
+          <div class="projects"></div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>

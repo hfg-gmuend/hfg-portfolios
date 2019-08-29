@@ -1,0 +1,45 @@
+{# @var craft \craft\web\twig\variables\CraftVariable #}
+{#
+/**
+ * Portfolios plugin for Craft CMS 3.x
+ *
+ * Portfolios Settings.twig
+ *
+ * @author    Niklas Sonnenschein
+ * @copyright Copyright (c) 2019 Niklas Sonnenschein
+ * @link      https://niklassonnenschein.de
+ * @package   Portfolios
+ * @since     1.0.0
+ */
+#}
+
+{% import "_includes/forms" as forms %}
+
+{% do view.registerAssetBundle("hfg\\portfolios\\assetbundles\\portfolios\\PortfoliosAsset") %}
+
+{{ forms.editableTableField({
+      id: 'gateways',
+      name: 'gateways',
+      required: true,
+      static: false,
+      cols: {
+        handle: {
+          heading: "Kürzel",
+          type: "text",
+          width: "20%"
+        },
+        name: {
+          heading: "Name",
+          type: "text",
+          width: "30%"
+        },
+        url: {
+          heading: "JSON-URL",
+          type: "url",
+          width: "50%"
+        }
+      },
+      rows: settings.gateways,
+      addRowLabel: "Portfolio hinzufügen"
+    })
+}}

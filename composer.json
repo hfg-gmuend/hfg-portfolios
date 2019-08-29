@@ -1,0 +1,41 @@
+{
+    "name": "hfg/portfolios",
+    "description": "Connect to Kirby Portfolios.",
+    "type": "craft-plugin",
+    "version": "1.0.0",
+    "keywords": [
+        "craft",
+        "cms",
+        "craftcms",
+        "craft-plugin",
+        "portfolios"
+    ],
+    "support": {
+        "docs": "???",
+        "issues": "???"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Niklas Sonnenschein",
+            "homepage": "https://niklassonnenschein.de"
+        }
+    ],
+    "require": {
+        "craftcms/cms": "^3.0.0-RC1",
+        "flipboxfactory/craft-elements-nested-index": "^2.2.2"
+    },
+    "autoload": {
+        "psr-4": {
+          "hfg\\portfolios\\": "src/"
+        }
+    },
+    "extra": {
+        "name": "Portfolios",
+        "handle": "portfolios",
+        "hasCpSettings": true,
+        "hasCpSection": false,
+        "changelogUrl": "???",
+        "class": "hfg\\portfolios\\Portfolios"
+    }
+}
