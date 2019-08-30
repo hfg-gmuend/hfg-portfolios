@@ -98,6 +98,7 @@ Portfolios.Field = Garnish.Base.extend({
           var table = this.$table.data("editableTable"),
               rowId = table.settings.rowIdPrefix + (table.biggestId + 1),
               $tr   = table.createRow(rowId, table.columns, table.baseName, {
+                "url": url,
                 "title": project.title,
                 "study": project.study,
                 "semester": project.semester,
