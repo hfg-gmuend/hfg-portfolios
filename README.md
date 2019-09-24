@@ -1,12 +1,10 @@
-# Portfolios plugin for Craft CMS 3.x
+# HfG Portfolios 
 
-Connect to Kirby Portfolios.
-
-![Screenshot](resources/img/plugin-logo.png)
+This plugin offers a field to fetch data from a Kirby site using JSON requests.
 
 ## Requirements
 
-This plugin requires Craft CMS 3.0.0-beta.23 or later.
+This plugin requires Craft CMS 3.3.0 or later.
 
 ## Installation
 
@@ -18,26 +16,10 @@ To install the plugin, follow these instructions.
 
 2. Then tell Composer to load the plugin:
 
-        composer require /portfolios
+        composer require hfg/portfolios
 
 3. In the Control Panel, go to Settings → Plugins and click the “Install” button for Portfolios.
 
-## Portfolios Overview
+## Configuration
 
--Insert text here-
-
-## Configuring Portfolios
-
--Insert text here-
-
-## Using Portfolios
-
--Insert text here-
-
-## Portfolios Roadmap
-
-Some things to do, and ideas for potential features:
-
-* Release it
-
-Brought to you by [Niklas Sonnenschein](https://niklassonnenschein.de)
+Specify the sites to fetch data from on the Settings page.
