@@ -118,10 +118,9 @@ class Projects extends Field
             'name' => $this->handle,
             'namespace' => $namespacedId,
             'prefix' => $view->namespaceInputId(''),
-            ];
+        ];
         $jsonVars = Json::encode($jsonVars);
         $view->registerJs('new Portfolios.Field("'.$view->namespaceInputId($id).'-field")');
-        //Craft::$app->getView()->registerJs("$('#{$namespacedId}-field').PortfoliosProjects(" . $jsonVars . ");");
 
         // Render the input template
         return Craft::$app->getView()->renderTemplate(

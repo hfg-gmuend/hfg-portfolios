@@ -4,7 +4,7 @@
   
     {% for project in projects %}
       <li class="project">
-        <div class="element large hasthumb" title="{{ project.title }}" data-url="{{ project.url }}">
+        <div class="element large hasthumb" title="{{ project.title }}" data-url="{{ project.url }}" data-values="{{ project|json_encode }}">
           <div class="elementthumb">
             <img src="{{ project.img }}" alt="">
           </div>

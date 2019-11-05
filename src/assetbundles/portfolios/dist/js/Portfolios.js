@@ -27,6 +27,7 @@ Portfolios.Explorer = Garnish.Base.extend({
   $search: null,
 
   serchTimeout: null,
+  pagination: null,
 
   init: function($container, settings) {
     this.$container = $container;
@@ -109,7 +110,8 @@ Portfolios.Explorer = Garnish.Base.extend({
     $(e.currentTarget).addClass("sel");
 
     const gateway = $(e.currentTarget).data("gateway");
-    this.getProjects(gateway);
+    this.pagination = 1;
+    this.getProjects(gateway, null);
 
     e.preventDefault();
   },
@@ -135,7 +137,8 @@ Portfolios.Explorer = Garnish.Base.extend({
     const data = {
       gateway: gateway,
       method: method,
-      options: options
+      options: options,
+      pagination: this.pagination
     };
 
     this.$spinner.removeClass("invisible");
@@ -155,10 +158,16 @@ Portfolios.Explorer = Garnish.Base.extend({
           this.$projects.html(response.html);
 
           this.$mainContent.append(this.$projects);
-          this.$projectElements = $(".element", this.$projects);
+          
+          this.$mainContent.off("click");
+          this.$mainContent.off("dblclick");
 
-          this.$projectElements.on("click", $.proxy(this.selectProject, this));
-          this.$projectElements.on("dblclick", $.proxy(this.dblClickProject, this));
+          this.$mainContent.on("click", ".element", $.proxy(this.selectProject, this));
+          this.$mainContent.on("dblclick", ".element", $.proxy(this.dblClickProject, this));
+
+          this.$main.on("scroll", $.proxy(function() {
+            this.loadMore(gateway, method, options);
+          }, this));
         }
       } else {
         this.$mainContent.html('<p class="error">Projekte konnten nicht geladen werden.</p>');
@@ -169,19 +178,61 @@ Portfolios.Explorer = Garnish.Base.extend({
     }, this));
   },
 
+  loadMore: function(gateway, method, options) {
+    if (this.canLoadMore()) {
+      this.$main.off("scroll");
+      this.pagination++;
+      this.$spinner.removeClass("invisible");
+
+      const $loadingSpinner = $("<div class=\"spinner\"/>");
+      this.$projects.append($loadingSpinner);
+      
+      const data = {
+        gateway: gateway,
+        method: method,
+        options: options,
+        pagination: this.pagination
+      };
+
+      Craft.postActionRequest("portfolios/explorer/get-projects", data, $.proxy(function(response, textStatus) {
+        this.deselectProjects();
+        this.$spinner.addClass("invisible");
+        $loadingSpinner.remove();
+
+        if (textStatus=="success") {
+          if (typeof response.error == "undefined") {
+            this.$projects.append(response.html);
+
+            this.$projectElements = $(".element", this.$projects);
+
+            this.$main.on("scroll", $.proxy(function() {
+              this.loadMore(gateway, method, options);
+            }, this));
+          }
+        }
+      }, this));
+    }
+  },
+
+  canLoadMore: function() {
+    const containerScrollHeight = this.$main.prop("scrollHeight"),
+          containerScrollTop = this.$main.scrollTop(),
+          containerHeight = this.$main.outerHeight();
+    
+    return (containerScrollHeight - containerScrollTop <= containerHeight + 15);
+  },
+
   selectProject: function(e) {
     this.$projectElements.removeClass("sel");
     $(e.currentTarget).addClass("sel");
 
-    const url = $(e.currentTarget).data("url");
-    this.settings.onSelectProject(url);
+    const values = $(e.currentTarget).data("values");
+    this.settings.onSelectProject(values);
   },
 
-  dblClickProject: function(e) {
-    this.selectProject(e);
-    
-    const url = $(e.currentTarget).data("url");
-    this.settings.onDoubleClickProject(url);
+  dblClickProject: function(e) {    
+    const values = $(e.currentTarget).data("values");
+    this.settings.onDoubleClickProject(values);
   },
 
   deselectProjects: function() {

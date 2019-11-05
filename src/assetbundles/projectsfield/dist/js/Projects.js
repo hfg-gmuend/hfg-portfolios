@@ -15,7 +15,6 @@ if (typeof Portfolios == 'undefined') {
 }
 
 Portfolios.Field = Garnish.Base.extend({
-  $input: null,
   $container: null,
   $addButtton: null,
 
@@ -65,12 +64,12 @@ Portfolios.Field = Garnish.Base.extend({
     if (!this.explorer) {
       this.explorer = new Portfolios.Explorer($explorerContainer, {
         namespaceInputId: this.inputId,
-        onSelectProject: $.proxy( (url) => {
-          selectedProject = url;
+        onSelectProject: $.proxy( (values) => {
+          selectedProject = values;
           $selectBtn.removeClass("disabled");
         }, this),
-        onDoubleClickProject: $.proxy( (url) => {
-          this.appendTable(url);
+        onDoubleClickProject: $.proxy( (values) => {
+          this.appendTable(values);
           this.projectSelectorModal.hide();
         }, this),
         onDeselectProject: function() {
@@ -83,47 +82,33 @@ Portfolios.Field = Garnish.Base.extend({
     }
   },
 
-  appendTable: function(url) {
-    const query = {
-      url: url
-    };
+  appendTable: function(values) {
+    const project = values;
+    const study = this.explorer.$sectionLinks.filter(".sel").html();
 
-    Craft.postActionRequest("portfolios/explorer/get-data", query, $.proxy(function(response, textStatus) {
-      if (textStatus == "success") {
-        if(response.error) {
-          console.error(response.error);
-        } else {
-          const project = JSON.parse(response);
+    var table = this.$table.data("editableTable"),
+        rowId = table.settings.rowIdPrefix + (table.biggestId + 1),
+        $tr   = table.createRow(rowId, table.columns, table.baseName, {
+          "url": project.url,
+          "title": project.title,
+          "study": study,
+          "semester": project.semester,
+          "period": project.period,
+          "year": project.year,
+          "course": project.course,
+          "img": project.img
+        });
 
-          var table = this.$table.data("editableTable"),
-              rowId = table.settings.rowIdPrefix + (table.biggestId + 1),
-              $tr   = table.createRow(rowId, table.columns, table.baseName, {
-                "url": url,
-                "title": project.title,
-                "study": project.study,
-                "semester": project.semester,
-                "period": project.period,
-                "year": project.year,
-                "course": project.course,
-                "img": project.img,
-                "vimeo": project.vimeo
-              });
+    $tr.appendTo(table.$tbody);
 
-          $tr.appendTo(table.$tbody);
+    var row = table.createRowObj($tr);
+    table.sorter.addItems($tr);
 
-          var row = table.createRowObj($tr);
-          table.sorter.addItems($tr);
-
-          table.rowCount++;
-          table.updateAddRowButton();
-          table.settings.onAddRow($tr);
-        }
-      }
-    }, this));
+    table.rowCount++;
+    table.updateAddRowButton();
+    table.settings.onAddRow($tr);
   }
 });
-
-
 
 /**
  * Matrix compatibility

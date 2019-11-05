@@ -68,8 +68,9 @@ class ExplorerController extends Controller
        $gatewayHandle = Craft::$app->getRequest()->getParam("gateway");
        $method = Craft::$app->getRequest()->getParam("method");
        $options = Craft::$app->getRequest()->getParam("options", []);
+       $pagination = Craft::$app->getRequest()->getParam("pagination");
 
-       $projects = $this->_getProjects($gatewayHandle, $method, $options);
+       $projects = $this->_getProjects($gatewayHandle, $method, $options, $pagination);
 
        $html = Craft::$app->getView()->renderTemplate("portfolios/_elements/projects", [
           "projects" => $projects
@@ -81,41 +82,23 @@ class ExplorerController extends Controller
      }
 
      /**
-      * Get data from a single project
-      * 
-      * @return Response
-      */
-      public function actionGetData(): Response
-      {
-        $this->requireAcceptsJson();
-
-        $url      = Craft::$app->getRequest()->getParam("url") . ".json";
-        $response = Portfolios::$plugin->restClient->get($url, array(), false);
-        
-        if ($response["statusCode"] === 200) {
-          return $this->asJson($response["body"]);
-        }
-
-        return null;
-      }
-
-
-
-
-     /**
       * Get Gateway URL by handle
       * 
       * @param string $gatewayHandle Gateway ID as defined in plugin settings page
       *
       * @return string $gatewayUrl
       */
-     private function _getGatewayUrl($gatewayHandle)
+     private function _getGatewayUrl($gatewayHandle, $pagination)
      {
        $gateways = Portfolios::$plugin->getSettings()->gateways;
 
        foreach ($gateways as $gateway) {
          if($gateway["handle"] == $gatewayHandle) {
-           return $gateway["url"];
+           if ($pagination) {
+            return $gateway["url"] . "/page:" . $pagination;
+           } else {
+             return $gateway["url"];
+           }
          }
        }
 
@@ -131,12 +114,36 @@ class ExplorerController extends Controller
       *
       * @return array $response
       */
-     private function _getProjects($gatewayHandle, $method = "get", $options) {
-       $url = $this->_getGatewayUrl($gatewayHandle);
-       $response = Portfolios::$plugin->restClient->get($url, array(), false);
+     private function _getProjects($gatewayHandle, $method = "get", $options, $pagination = false) {
+       if ($method == "get") {
+        $url = $this->_getGatewayUrl($gatewayHandle, $pagination);
+        $response = Portfolios::$plugin->restClient->get($url, array(), false);
 
-       if ($response["statusCode"] === 200) {
-         return json_decode($response["body"], true);
+        if ($response["statusCode"] === 200) {
+          return json_decode($response["body"], true);
+        }
+       } else if ($method == "search") {
+        $responses = [];
+        
+        for ($i = 1; $i < 10; $i++) {
+          $url = $this->_getGatewayUrl($gatewayHandle, $i);
+          $response = Portfolios::$plugin->restClient->get($url, array(), false);
+
+          if ($response["statusCode"] === 200) {
+            $resultSet = json_decode($response["body"], true);
+
+            for($j = 0; $j < count($resultSet); $j++) {
+              if(stripos($resultSet[$j]["title"], $options["q"]) !== false
+                || stripos($resultSet[$j]["course"], $options["q"]) !== false
+                || stripos($resultSet[$j]["period"], $options["q"]) !== false
+                || stripos($resultSet[$j]["year"], $options["q"]) !== false) {
+                $responses[] = $resultSet[$j];
+              }
+            }
+          }
+        }
+
+        return $responses;
        }
 
         return null;
