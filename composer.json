@@ -2,7 +2,7 @@
     "name": "hfg/portfolios",
     "description": "Connect to Kirby Portfolios.",
     "type": "craft-plugin",
-    "version": "1.0.1",
+    "version": "1.0.2",
     "keywords": [
         "craft",
         "cms",
@@ -18,8 +18,7 @@
         }
     ],
     "require": {
-        "craftcms/cms": "^3.3.0",
-        "flipboxfactory/craft-elements-nested-index": "^2.2.2"
+        "craftcms/cms": "^3.3.0"
     },
     "autoload": {
         "psr-4": {
