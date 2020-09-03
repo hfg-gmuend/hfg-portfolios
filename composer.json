@@ -2,7 +2,7 @@
     "name": "hfg/portfolios",
     "description": "Connect to Kirby Portfolios.",
     "type": "craft-plugin",
-    "version": "1.0.2",
+    "version": "1.1",
     "keywords": [
         "craft",
         "cms",

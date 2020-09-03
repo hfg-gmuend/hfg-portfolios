@@ -127,7 +127,7 @@ class Projects extends Field
             'portfolios/_components/fields/Projects_input',
             [
                 'name' => $this->handle,
-                'value' => $value["projects"],
+                'value' => (isset($value["projects"]) ? $value["projects"] : []),
                 'field' => $this,
                 'id' => $id,
                 'namespacedId' => $namespacedId,
