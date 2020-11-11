@@ -8,7 +8,7 @@
  * @copyright Copyright (c) 2019 Niklas Sonnenschein
  */
 
-namespace hfg\portfolios\assetbundles\Portfolios;
+namespace hfg\portfolios\assetbundles\portfolios;
 
 use Craft;
 use craft\web\AssetBundle;
